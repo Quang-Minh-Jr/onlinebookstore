@@ -1,0 +1,51 @@
+pipeline {
+    agent none
+    stages {
+        stage('Complie') {
+            agent {
+                // assign packaging job for slave to execute
+                label 'java_slave_container'
+            }
+            steps {
+                //maven compile  with shell command
+                sh 'mvn compile'
+            }
+        }
+
+        stage('Test') {
+            agent {
+                // assign packaging job for slave to execute
+                label 'java_slave_container'
+            }
+            steps {
+                //test with maven compile
+                sh 'mvn test'
+            }
+        }
+        
+        stage('Package') {
+            steps {                
+                //package
+                sh 'mvn package'
+            }
+        }
+        
+        stage('Verify') {
+            steps {
+                //Verify
+                sh 'mvn verify'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                sh 'echo ready to deploy'
+            }
+        }
+    }
+    post{
+        always{
+            cleanWS()
+        }
+    }
+}
