@@ -28,7 +28,7 @@ pipeline {
                 //Verify
                 sh 'mvn verify'
                 // Get the name of war file
-                sh 'ls /var/lib/jenkins/workspace/${env.JOB_NAME}/target| grep .war'
+                sh "ls /var/lib/jenkins/workspace/${env.JOB_NAME}/target| grep war"
                 // Change the environment variables
             }
         }
