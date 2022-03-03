@@ -59,6 +59,7 @@ pipeline {
                     sh "docker build -t ${ImageName}:${ImageVersion} \
                         --build-arg warfile=${PROJECTNAME}.war ."
                     // Run the docker container with new image
+                    sh 'docker stop ${PROJECTNAME} && docker rm ${PROJECTNAME}'
                     sh 'docker run -it -d --name ${PROJECTNAME} -p 8888:8080 ${ImageName}:${ImageVersion}' 
                 }       
             }
