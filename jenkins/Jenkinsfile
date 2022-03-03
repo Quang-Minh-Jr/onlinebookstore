@@ -25,9 +25,9 @@ pipeline {
             // }
             steps {                
                 //package
-                sh 'mvn package'
-                //Verify
-                sh 'mvn verify'
+                // sh 'mvn package'
+                // //Verify
+                // sh 'mvn verify'
                 sh "ls ${env.WARFILELOCATION}| grep war"
                 //Get the name of war file and Change the environment variables
                 script {
