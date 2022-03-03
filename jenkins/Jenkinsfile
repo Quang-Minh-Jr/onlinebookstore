@@ -32,7 +32,7 @@ pipeline {
                 dir('./') {
                     script {
                         def data = readFile(file: 'warname.txt')
-                        WARFILENAME=data
+                        env.WARFILENAME=data
                         echo "WAR file name is: " ${WARFILENAME}
                     }
                 }
