@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {                 
         WARFILENAME = ""
-        WARFILELOCATION = "/var/lib/jenkins/workspace/${env.JOB_NAME}/target"
+        WARFILELOCATION = "${WORKSPACE}/target"
     }
     stages {
         // stage('Build') {
@@ -50,14 +50,14 @@ pipeline {
                 // Get the war file path
                 echo "${WARFILENAME}"
                 echo "${WORKSPACE}"
-                sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ${pwd}"
+                sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ${env.WARFILELOCATION}/jenkins"
                 // build the image with war file path "warfile"
-                // dir('jenkins') {
-                //     sh "docker build -t tomcatserver:v1 \
-                //         --build-arg warfile=${WARFILENAME} ."
-                //     // Run the docker container with new image
-                //     sh 'docker run -it --name onlinebookstore -p 8686:8080 tomcatserver:v1' 
-                // }       
+                dir('jenkins') {
+                    sh "docker build -t tomcatserver:v1 \
+                        --build-arg warfile=${WARFILENAME} ."
+                    // Run the docker container with new image
+                    sh 'docker run -it --name onlinebookstore -p 8686:8080 tomcatserver:v1' 
+                }       
             }
         }
     }
