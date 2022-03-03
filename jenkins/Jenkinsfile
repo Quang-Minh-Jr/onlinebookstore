@@ -45,7 +45,7 @@ pipeline {
         
         stage('Deploy') {
             // agent {
-            //     // assign packaging job for slave to execute
+            // assign packaging job for slave to execute
             //     label ''
             // }
             steps {
