@@ -30,13 +30,13 @@ pipeline {
                 sh 'mvn verify'
                 sh "ls ${env.WARFILELOCATION}| grep war"
                 //Get the name of war file and Change the environment variables
-                env.WARFILENAME = sh (
+                WARFILENAME = sh (
                     script: "ls ${env.WARFILELOCATION}| grep war",
                     returnStdout: true
                 ).trim()
-                echo ${env.WARFILENAME}
+                echo ${WARFILENAME}
             }
-        }
+        }  
         
         stage('Deploy') {
             // agent {
