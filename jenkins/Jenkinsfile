@@ -36,7 +36,7 @@ pipeline {
                         returnStdout: true
                     ).trim() 
                 }
-                echo '${WARFILENAME}'
+                echo "${WARFILENAME}"
             }
         }  
         
