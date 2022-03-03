@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {                 
         WARFILENAME = ""
-        WARFILELOCATION = "${WORKSPACE}/target"
+        WARFILELOCATION = "/var/lib/jenkins/workspace/WAR_PROJECT/target"
         PROJECTNAME = "onlinebookstore"
     }
     stages {
