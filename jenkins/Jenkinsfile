@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {                 
         WARFILENAME = ""
+        WARFILELOCATION = "/var/lib/jenkins/workspace/${env.JOB_NAME}/target"
     }
     stages {
         stage('Build') {
@@ -27,16 +28,10 @@ pipeline {
                 sh 'mvn package'
                 //Verify
                 sh 'mvn verify'
-                sh "ls /var/lib/jenkins/workspace/${env.JOB_NAME}/target| grep war > warname.txt"
+                sh "ls ${env.WARFILELOCATION}| grep war"
                 //Get the name of war file and Change the environment variables
-                dir('./') {
-                    script {
-                        def data = readFile(file: 'warname.txt')
-                        env.WARFILENAME=data
-                        echo "WAR file name is: " ${WARFILENAME}
-                    }
-                }
-                
+                env.WARFILENAME = sh ("ls ${env.WARFILELOCATION}| grep war").trim()
+                echo ${env.WARFILENAME}
             }
         }
         
@@ -49,10 +44,10 @@ pipeline {
                 echo 'ready to deploy'
                 // Get the war file path
                 
-                sh "cp /var/lib/jenkins/workspace/${env.JOB_NAME}/target/${WARFILENAME} ."
+                sh "cp ${env.WARFILELOCATION}/${env.WARFILENAME} ."
                 // build the image with war file path "warfile"
                 sh "docker build -t tomcatserver:v1 \
-                        --build-arg warfile=${WARFILENAME} ."
+                        --build-arg warfile=${env.WARFILENAME} ."
                 // Run the docker container with new image
                 sh 'docker run -it --name onlinebookstore -p 8686:8080 tomcatserver:v1'
             }
