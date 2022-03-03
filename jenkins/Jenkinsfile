@@ -3,6 +3,7 @@ pipeline {
     environment {                 
         WARFILENAME = ""
         WARFILELOCATION = "${WORKSPACE}/target"
+        PROJECTNAME = "onlinebookstore"
     }
     stages {
         // stage('Build') {
@@ -50,13 +51,13 @@ pipeline {
                 // Get the war file path
                 echo "${WARFILENAME}"
                 echo "${WORKSPACE}"
-                sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ${env.WORKSPACE}/jenkins/onlinebookstore.war"
+                sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ${env.WORKSPACE}/jenkins/${PROJECTNAME}.war"
                 // build the image with war file path "warfile"
                 dir('jenkins') {
                     sh "docker build -t tomcatserver:v1 \
-                        --build-arg warfile=${WARFILENAME} ."
+                        --build-arg warfile=${PROJECTNAME}.war ."
                     // Run the docker container with new image
-                    sh 'docker run -it -d --name onlinebookstore -p 8888:8080 tomcatserver:v1' 
+                    sh 'docker run -it -d --name ${PROJECTNAME} -p 8888:8080 tomcatserver:v1' 
                 }       
             }
         }
