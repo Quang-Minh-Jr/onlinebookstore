@@ -4,20 +4,22 @@ pipeline {
         WARFILENAME = ""
         WARFILELOCATION = "/var/lib/jenkins/workspace/WAR_PROJECT/target"
         PROJECTNAME = "onlinebookstore"
+        ImageName = "tomcatserver"
+        ImageVersion = "v1"
     }
     stages {
-        // stage('Build') {
-        //     agent {
-        //         // assign packaging job for slave to execute
-        //         label 'java_slave_container'
-        //     }
-        //     steps {
-        //         //maven compile  with shell command
-        //         sh 'mvn compile'
-        //         //test with maven compile
-        //         sh 'mvn test'
-        //     }
-        // }
+        stage('Build') {
+            agent {
+                // assign packaging job for slave to execute
+                label 'java_slave_container'
+            }
+            steps {
+                //maven compile  with shell command
+                sh 'mvn compile'
+                //test with maven compile
+                sh 'mvn test'
+            }
+        }
         
         stage('Package') {
             // agent {
@@ -25,10 +27,10 @@ pipeline {
             //     label ''
             // }
             steps {                
-                //package
-                // sh 'mvn package'
-                // //Verify
-                // sh 'mvn verify'
+                // package
+                sh 'mvn package'
+                //Verify
+                sh 'mvn verify'
                 sh "ls ${env.WARFILELOCATION}| grep war"
                 //Get the name of war file and Change the environment variables
                 script {
@@ -54,10 +56,10 @@ pipeline {
                 sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ${env.WORKSPACE}/jenkins/${PROJECTNAME}.war"
                 // build the image with war file path "warfile"
                 dir('jenkins') {
-                    sh "docker build -t tomcatserver:v1 \
+                    sh "docker build -t ${ImageName}:${ImageVersion} \
                         --build-arg warfile=${PROJECTNAME}.war ."
                     // Run the docker container with new image
-                    sh 'docker run -it -d --name ${PROJECTNAME} -p 8888:8080 tomcatserver:v1' 
+                    sh 'docker run -it -d --name ${PROJECTNAME} -p 8888:8080 ${ImageName}:${ImageVersion}' 
                 }       
             }
         }
