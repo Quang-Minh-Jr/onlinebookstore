@@ -50,7 +50,7 @@ pipeline {
                 // Get the war file path
                 echo "${WARFILENAME}"
                 echo "${WORKSPACE}"
-                sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ${env.WARFILELOCATION}/jenkins"
+                sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ${env.WORKSPACE}/jenkins"
                 // build the image with war file path "warfile"
                 dir('jenkins') {
                     sh "docker build -t tomcatserver:v1 \
