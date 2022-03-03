@@ -34,9 +34,9 @@ pipeline {
                     WARFILENAME = sh (
                         script: "ls ${env.WARFILELOCATION}| grep war",
                         returnStdout: true
-                    ).trim()
-                    echo ${WARFILENAME}
+                    ).trim() 
                 }
+                echo ${WARFILENAME}
             }
         }  
         
