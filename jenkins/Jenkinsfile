@@ -50,13 +50,13 @@ pipeline {
                 // Get the war file path
                 echo "${WARFILENAME}"
                 echo "${WORKSPACE}"
-                sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ${env.WORKSPACE}/jenkins"
+                sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ${env.WORKSPACE}/jenkins/onlinebookstore.war"
                 // build the image with war file path "warfile"
                 dir('jenkins') {
                     sh "docker build -t tomcatserver:v1 \
                         --build-arg warfile=${WARFILENAME} ."
                     // Run the docker container with new image
-                    sh 'docker run -it --name onlinebookstore -p 8686:8080 tomcatserver:v1' 
+                    sh 'docker run -it -d --name onlinebookstore -p 8888:8080 tomcatserver:v1' 
                 }       
             }
         }
