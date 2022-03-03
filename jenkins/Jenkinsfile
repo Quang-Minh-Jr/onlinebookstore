@@ -49,14 +49,15 @@ pipeline {
                 echo 'ready to deploy'
                 // Get the war file path
                 echo "${WARFILENAME}"
-                sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ."
+                echo "${WORKSPACE}"
+                sh "cp ${env.WARFILELOCATION}/${WARFILENAME} ${pwd}"
                 // build the image with war file path "warfile"
-                dir('jenkins') {
-                    sh "docker build -t tomcatserver:v1 \
-                        --build-arg warfile=${WARFILENAME} ."
-                    // Run the docker container with new image
-                    sh 'docker run -it --name onlinebookstore -p 8686:8080 tomcatserver:v1' 
-                }       
+                // dir('jenkins') {
+                //     sh "docker build -t tomcatserver:v1 \
+                //         --build-arg warfile=${WARFILENAME} ."
+                //     // Run the docker container with new image
+                //     sh 'docker run -it --name onlinebookstore -p 8686:8080 tomcatserver:v1' 
+                // }       
             }
         }
     }
